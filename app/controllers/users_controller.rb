@@ -8,9 +8,13 @@ class UsersController < ApplicationController
     #actions with skip_before_action:
 
     def index
+        user = User.all
+        render json: users
     end 
 
     def show
+        user = User.find_by(params[:id])
+        render json: user
     end
 
     def create
