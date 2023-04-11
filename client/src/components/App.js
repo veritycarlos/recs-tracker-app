@@ -6,6 +6,7 @@ import Rec from "./Rec"
 import Login from "./Login";
 import Signup from "./Signup";
 import '../styling/NavBar.css';
+import '../styling/Home.css';
 
 function App() {
   return (

@@ -1,0 +1,23 @@
+body {
+    background-image: url("https://www.10wallpaper.com/wallpaper/1680x1050/2112/MacOS_Monterey_2021_Purple_Abstract_5K_Background_1680x1050.jpg") ;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 800px
+}
+
+.home-title {
+    text-align: center;
+    color: blueviolet;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;  
+}
+
+.home-p {
+    text-align: center;
+    width: 50%;
+    margin: auto;
+    display: flex;
+    color: blueviolet;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;  
+}

@@ -7,13 +7,15 @@ body {
 }
 
 .nav {
-    background-color: #333;
-    color: white;
+    background-color: plum;
+    color: #0e1111;
     display: flex;
     justify-content: space-between;
     align-items: stretch;
     gap: 2rem;
     padding: 0 1rem;
+    color: blueviolet;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
 }
 
 .rec-tracker {
