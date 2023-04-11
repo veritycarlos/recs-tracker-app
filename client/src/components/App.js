@@ -5,18 +5,22 @@ import Navbar from "./NavBar";
 import Rec from "./Rec"
 import Login from "./Login";
 import Signup from "./Signup";
+import '../styling/NavBar.css';
 
 function App() {
   return (
-    <div className="App">
+    <>
       <Navbar />
-      <Routes>
-        <Route exact path="/" element = {<Home/>} />
-        <Route exact path="/rec" element = {<Rec/>} />
-        <Route exact path="/signup" element = {<Signup/>} />
-        <Route exact path="/login" element = {<Login/>} />
-      </Routes>
-    </div>
+      <div className="container">
+        <Routes>
+          <Route exact path="/" element = {<Home/>} />
+          <Route exact path="/rec" element = {<Rec/>} />
+          <Route exact path="/signup" element = {<Signup/>} />
+          <Route exact path="/login" element = {<Login/>} />
+        </Routes>
+      </div>
+
+    </>
   );
 }
 

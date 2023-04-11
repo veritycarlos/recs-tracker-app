@@ -4,7 +4,7 @@ import { NavLink, useNavigate} from 'react-router-dom'
 const Navbar = () => {
     const [user, setUser] = useState([])
     const [loggedIn, setLoggedIn] = useState(false)
-    const [errors, setErrors] = useState()
+    // const [errors, setErrors] = useState()
     const navigate = useNavigate
 
     useEffect(() => {
@@ -45,45 +45,32 @@ const Navbar = () => {
     if (loggedIn) {
         return (
             <>
-            <div>
-                <NavLink to='/'>
-                    <button>Home</button>
+            <nav className="nav">
+                <NavLink className="rec-tracker" to='/'>
+                    RecsTracker
                 </NavLink>
-                <NavLink to='/rec'>
-                    <button>Rec</button>
-                </NavLink>
-            </div>
-            <div>
-                <button onClick={logoutUser}>Logout</button>
-                <hr/>
-                <h1>Welcome {user.username}</h1>
-                <NavLink to='/plants'>
-                    <button>Plants</button>
-                </NavLink>
-            </div>
+                <ul>
+                    <NavLink className="link" to='/rec'>Rec</NavLink>
+                    <NavLink className="link" onClick={logoutUser}>Logout</NavLink>
+                </ul>
+            </nav>
+                {/* <h1> Welcome {user.name}</h1> */}
             </>
         )
     } else {
-        return (
-            <>
-            <div>
-                <NavLink to='/'>
-                    <button>Home</button>
+        return (  
+            <nav className="nav">
+                <NavLink className="link" to='/'>
+                    Home
                 </NavLink>
-                <NavLink to='/rec'>
-                    <button>Rec</button>
+                <NavLink className="link" to='/login'>
+                    Login
                 </NavLink>
-            </div>
-            <div>
-                <NavLink to='/login'>
-                    <button>Login</button>
+                <NavLink className="link" to='/signup'>
+                    Signup
                 </NavLink>
-                <NavLink to='/signup'>
-                    <button>Signup</button>
-                </NavLink>
-                <hr/>
-            </div>
-            </>
+            </nav>
+            
         )
     } 
 
