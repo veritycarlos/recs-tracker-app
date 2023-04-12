@@ -1,18 +1,22 @@
 Rails.application.routes.draw do
   
-  # resources :notes
-  # resources :recommendations
-  # resources :categories
-  resources :users, only: [:index, :show]
+  resources :notes
+  resources :recommendations
+  resources :categories
 
-  get "/me", to: "users#show"
+  # `` resources :users, only: [:index, :show, :create]
+  # `` resources :users
+  # `` get '/signup', to: 'users#create'
+  # `` get '/me', to: 'users#get_current_user'
+  # `` get "/me", to: "users#show"
 
-  post "/signup", to: "users#create"
-  # get '/signup', to: 'users#create'
+  # get '/users' , to: 'users#index'
+  get '/current-user', to: 'users#get_current_user'
+  get '/users', to: 'users#index'
   post '/login', to: 'sessions#create'
   delete '/logout', to: 'sessions#destroy'
+  post "/signup", to: "users#create"
   get '/me', to: 'users#show'
-  # get '/me', to: 'users#get_current_user'
 
   # Routing logic: fallback requests for React Router.
   # Leave this here to help deploy your app later!

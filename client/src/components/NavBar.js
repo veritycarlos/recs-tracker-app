@@ -1,34 +1,10 @@
-import React, {useState, useEffect} from 'react'
+import React, { useContext } from 'react'
+import { UserContext } from '../context/user'
 import { NavLink, useNavigate} from 'react-router-dom'
 
 const Navbar = () => {
-    const [user, setUser] = useState([])
-    const [loggedIn, setLoggedIn] = useState(false)
-    // const [errors, setErrors] = useState()
+    const {user, logout, loggedIn } = useContext(UserContext)
     const navigate = useNavigate
-
-    useEffect(() => {
-        fetch(`/users/id`)
-        .then(res => res.json())
-        .then(data => {
-            setUser(data)
-            if (data.error) {
-                setLoggedIn(false)
-            } else {
-                setLoggedIn(true)
-            }
-        })
-    }, [])
-
-    // const login = (user) => {
-    //     setUser(user)
-    //     setLoggedIn(true)
-    // }
-
-    const logout = () => {
-        setUser({})
-        setLoggedIn(false)
-    }
 
     const logoutUser = () => {
         fetch('/logout', {
@@ -41,27 +17,23 @@ const Navbar = () => {
         })
     }
 
-
     if (loggedIn) {
         return (
-            <>
             <nav className="nav">
                 <NavLink className="rec-tracker" to='/'>
                     RecsTracker
                 </NavLink>
                 <ul>
-                    <NavLink className="link" to='/rec'>Rec</NavLink>
+                    <NavLink className="link" to='/categories'> {user.name}'s Recs</NavLink>
                     <NavLink className="link" onClick={logoutUser}>Logout</NavLink>
                 </ul>
             </nav>
-                {/* <h1> Welcome {user.name}</h1> */}
-            </>
         )
     } else {
         return (  
             <nav className="nav">
-                <NavLink className="link" to='/'>
-                    Home
+                <NavLink className="rec-tracker" to='/'>
+                    RecsTracker
                 </NavLink>
                 <NavLink className="link" to='/login'>
                     Login
@@ -69,11 +41,9 @@ const Navbar = () => {
                 <NavLink className="link" to='/signup'>
                     Signup
                 </NavLink>
-            </nav>
-            
+            </nav> 
         )
     } 
-
 }
 
 export default Navbar

@@ -12,23 +12,32 @@ class UsersController < ApplicationController
         render json: users
     end  
 
+    # Get current user and render it in json 
     def show
-        # user = User.find_by(id: params[:id])
-        render json: @current_user
-        # user = User.find_by(id: session[:user_id])
-        # if user
-        #     render json: user
-        # else
-        #     render json: { error: "User not found" }, status: :unauthorized 
-        # end
+        user = User.find_by(id: session[:user_id])
+        if user
+            render json: user
+        else
+            render json: { error: "User not found" }, status: :unauthorized 
+        end
     end
 
+    # def create
+    #     # @user = User.new
+    #     user = User.create!(user_params) 
+    #     if user.valid?
+    #         session[:user_id] = user.id 
+    #         render json: user, status: :created
+    #     else 
+    #         render json: { errors: user.errors.full_messages }, status: :unprocessable_entity  
+    #     end 
+    # end 
+
     def create
-        # @user = User.new
-        user = User.create!(user_params) 
+        user = User.create(user_params) 
         if user.valid?
             session[:user_id] = user.id 
-            render json: user, status: :created
+            render json: user
         else 
             render json: { errors: user.errors.full_messages }, status: :unprocessable_entity  
         end 
