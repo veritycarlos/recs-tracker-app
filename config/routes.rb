@@ -18,7 +18,6 @@ Rails.application.routes.draw do
   # get '/categories', to: 'categories#index'
   # post '/categories', to: 'categories#create'
   
-
   resources :users, only: [:show, :create, :index]
   post '/login', to: 'sessions#create' 
   delete '/logout', to: 'sessions#destroy' 
