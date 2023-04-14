@@ -46,7 +46,7 @@ const Rec = () => {
             </Link>
             <br/>
             <br/>
-            <button onClick={handleDelete} >Delete Recommendation</button>
+                <button onClick={handleDelete} >Delete Recommendation</button>
             {recommendationNotes?.map(n => (
                 <h3 key={n.id}>{n.note}</h3>
             ))}
