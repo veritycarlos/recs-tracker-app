@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+
+  get "*path", to: "fallback#index", constraints: ->(req) { !req.xhr? && req.format.html? }
   
   resources :notes, only: [:index, :create ]
   resources :recommendations
@@ -23,8 +25,6 @@ Rails.application.routes.draw do
   post "/signup", to: "users#create" 
   get '/me', to: 'users#show' 
   get '/all', to: 'categories#all'
-
-  get "*path", to: "fallback#index", constraints: ->(req) { !req.xhr? && req.format.html? }
   
   # Routing logic: fallback requests for React Router.
   # Leave this here to help deploy your app later!
