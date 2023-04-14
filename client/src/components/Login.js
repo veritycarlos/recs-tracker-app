@@ -1,59 +1,56 @@
-import React, { useState, useContext } from 'react'
-import { UserContext } from '../context/user'
-import { useNavigate } from 'react-router-dom'
+// import React, { useState } from 'react'
+// import { useDispatch, useSelector } from 'react-redux';
+// import { postSession } from '../features/sessionsSlice.js';
+
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { postSession } from '../features/sessionsSlice';
+
+
+// function Login() {
+//     const [name, setName] = useState("")
+//     const [password, setPassword] = useState("")
+//     const dispatch = useDispatch();
+//     const errors = useSelector(state => state.sessions.error)
 
 function Login() {
-    const [name, setName] = useState("")
-    const [password, setPassword] = useState("")
-    const [errorList, setErrorList] = useState([])
-    const {login} = useContext(UserContext)
-    const navigate = useNavigate()
+    const dispatch = useDispatch();
+    const errors = useSelector(state => state.sessions.error)
+    const [ name, setName ] = useState("");
+    const [ password, setPassword ] = useState("");
+
   
-    const handleSubmit = (e) => {
+    function handleSubmit(e) {
         e.preventDefault()
-        fetch('/login', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json'},
-            body: JSON.stringify({
-                name: name,
-                password: password 
-            })
-        })
-        .then(res => res.json())
-        .then(user => { 
-            if (!user.errors) {
-                login(user)
-                navigate ('/')
-            } else {
-                setName("")
-                setPassword("")
-                const errorLi = user.errors.map(e => <li>{e}</li>)
-                setErrorList(errorLi)
-            }
-        })
+        dispatch(postSession({ name, password }))
     }
 
     return (
-        <form onSubmit={handleSubmit}>
-            <br/>
-            <label>  Username: </label>
-            <input
-                type="text"
-                id="name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-            /> <br/>
-            <br/>
-            <label>  Password: </label>
-            <input
-                type="password"
-                id="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-            /> <br/>
-            <br/>
-            <button type="submit">Login</button>
-        </form>
+        <div>
+            <form onSubmit={handleSubmit}>
+                <br/>
+                <label>  Name: </label>
+                <input
+                    type="text"
+                    id="name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                /> <br/>
+                <br/>
+                <label>  Password: </label>
+                <input
+                    type="password"
+                    id="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                /> <br/>
+                <br/>
+                 <button type="submit">Login</button>
+                 {errors ? <p >{errors}</p> : null}
+             </form>
+             <Link to={"/signup"}>Don't have an account? Signup here</Link>
+         </div>
     )    
 }
 

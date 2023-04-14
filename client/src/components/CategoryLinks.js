@@ -1,15 +1,15 @@
 import React from 'react'
-import { NavLink } from 'react-router-dom'
+import {Link} from 'react-router-dom'
 
-const CategoryLinks = ({category}) => {
+const CategoryLinks = ( {category} ) => {
 
   return (
     <div>
         <nav>
-            <NavLink to={`/rec}`}>
+            <Link to={`/categories/${category.id}}`}>
                 {category.name}
-            </NavLink>  
-        </nav>
+            </Link>  
+          </nav>
         <br/>
     </div>
     

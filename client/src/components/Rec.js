@@ -1,44 +1,57 @@
-// import React, { useState, useEffect } from 'react'
-// import { useParams, NavLink, useNavigate } from 'react-router-dom'
+import React, { useEffect } from 'react';
+import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { deleteRecommendation } from '../features/recommendationsSlice';
+import { stateUpdateReset } from '../features/recommendationsSlice';
 
-// const Tip = () => {
-//     const [tip, setTip] = useState({
-//         plant:[]
-//     })
-//     const [tips, setTips] = useState([])
-//     const params = useParams();
-//     const navigate = useNavigate();
 
+const Rec = () => {
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const { id } = useParams();
+    const notes = useSelector(state => state.notes.entities);
+    const recommendations = useSelector(state => state.recommendations.entities);
+    const updated = useSelector(state => state.recommendations.updated);
+    const recommendation = recommendations?.find(recommendation => recommendation.id===parseInt(id));
+    const recommendationNotes = notes.filter(n => n.recommendation_id===parseInt(id));
+
+    const handleDelete = () => {
+        dispatch(deleteRecommendation(id))
+    }
+
+    useEffect(() => {
+        if (updated) {
+            navigate('/categories')
+            dispatch(stateUpdateReset())
+        }
+      })
   
-//     useEffect(() => {
-//         fetch(`/tip/${params.id}`)
-//         .then(res => res.json())
-//         .then(data => {
-//             setTip(data)
-//         })
-//     }, [])
+    return (
+        <div>
+            <h1>{recommendation?.name}</h1>
+            <div>
+                <hr/>
+                <p>Name: {recommendation?.name} </p>
+                <p>Year: {recommendation?.year}</p>
+                <p>Info: {recommendation?.info}</p>
+                <hr/>
+            </div>
+            <Link to={`/recommendations/${id}/edit`}>
+                Edit Recommendation
+            </Link>
+            <br/>
+            <br/>
+            <Link to={`/recommendations/${id}/notes/new`}>
+                Add New Note
+            </Link>
+            <br/>
+            <br/>
+            <button onClick={handleDelete} >Delete Recommendation</button>
+            {recommendationNotes?.map(n => (
+                <h3 key={n.id}>{n.note}</h3>
+            ))}
+        </div>
+    )
+}
 
-//     const deleteTip = e => {
-//         fetch(`/tips/${ params.id }`, {method: "DELETE"})
-//         .then(res => res.json())
-//         .then (data => { 
-//             removeTip(params.id)
-//             navigate(`/tips`)
-//         })       
-//     }
-
-//     const removeTip = id => {
-//         setTips(tips.filter( t => t.id != id))
-//     }
-//     return (
-//         <div>
-//             <br/>
-//             <h1>{tip.name}</h1>
-//             <p>{tip.comment}</p>
-//             <button onClick={ () => deleteTip( tip.id )}>Delete</button>
-//             <p><NavLink to={`/tips/${tip.id}/edit`}>Edit Tip</NavLink></p>
-//         </div>
-//     )
-// }
-
-// export default Tip
+export default Rec

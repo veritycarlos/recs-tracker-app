@@ -1,37 +1,29 @@
-import React, { useState, useContext } from 'react'
-import { UserContext } from '../context/user'
-import { useNavigate } from 'react-router-dom'
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { postSignup, postSession } from '../features/sessionsSlice';
+import { stateUpdateReset } from '../features/sessionsSlice';
 
 function Signup() {
-    const [name, setName] = useState("")
-    const [password, setPassword] = useState("")
-    const [errorsList, setErrorsList] = useState([])
-    const {signup} = useContext(UserContext)
-    const navigate = useNavigate()
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const errors = useSelector(state => state.sessions.errors)
+    const updated = useSelector(state => state.sessions.updated)
+    const [ name, setName ] = useState("");
+    const [ password, setPassword ] = useState("");
 
     const handleSubmit = (e) => {
-        e.preventDefault()
-        fetch('/signup' ,{
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json'},
-            body: JSON.stringify({
-                name: name,     
-                password: password
-            })
-        })
-        .then(res => res.json())
-        .then(user => {
-            if (!user.errors) {
-                signup(user)
-                navigate ('/')
-            } else {
-                setName("")
-                setPassword("")
-                const errorLis = user.errors.map(e => <li>{e}</li>)
-                setErrorsList(errorLis)
-            }
-        })   
+        e.preventDefault();
+        dispatch(postSignup({ name, password }))
     }
+
+    useEffect(() => {
+        if (updated) {
+            dispatch(postSession({ name, password }))
+            navigate('/');
+            dispatch(stateUpdateReset());
+        }
+      })
 
     return (
         <div>
@@ -56,7 +48,7 @@ function Signup() {
                 <input type="submit" />
             </form>
             <ul>
-                {errorsList}
+            {errors ? (errors.map((error) => {return <p className="errors">{error}</p>})) : null}
             </ul>
         </div>
     )

@@ -1,19 +1,18 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
 
-const TipLinks = ({tip, plant }) => {
+const RecLinks = ({recommendation}) => {
 
   return (
     <div>
         <nav>
-            <NavLink to={`/plants/tips/${tip.id}`}>
-                {tip.title}
-            </NavLink>  {plant.name}  
+            <NavLink to={`/recommendations/${recommendation.id}`}>
+                {recommendation.name}
+            </NavLink>  
         </nav>
         <br/>
     </div>
-    
   )
 }
 
-export default TipLinks
+export default RecLinks

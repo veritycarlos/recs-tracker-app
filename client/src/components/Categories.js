@@ -1,19 +1,28 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect} from 'react'
+import { NavLink } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 import CategoryLinks from './CategoryLinks'
-import {NavLink} from 'react-router-dom'
+import Login from './Login';
+import { fetchCategories } from '../features/categoriesSlice'
 
 function Categories() {
-    const[categories, setCategories] = useState([])
+    const dispatch = useDispatch();
+    const user = useSelector(state => state.sessions.entities)
+    const categories = useSelector(state => state.categories.entities)
+    // const recommendations = useSelector(state => state.recommendations.entities)
 
+    const categoryList = () => categories?.map(c => <CategoryLinks key={c.id} category={c}/>)
+    // const recLinks = () => categoryRecs.map(r => <RecLinks key={r.id} recommendation={r}/>)
+    // useEffect(() => {
+    //     dispatch(fetchCategories())
+    // }, [dispatch])
     useEffect(() => {
-        fetch('/categories')
-            .then(res => res.json())
-            .then(data => {
-                setCategories(data)
-            })
-    }, [])
+        dispatch(fetchCategories())
+    }, [dispatch])
 
-    const categoryList = categories.map(c => <CategoryLinks key={c.id} category={c}/>)
+    if (!user) return <Login />;
+
+
 
     const link = {
         width: '100px',
@@ -26,13 +35,14 @@ function Categories() {
 
     return (
         <>
-        <div>
-            <h1>Categories</h1>
-            {categoryList}
-        </div>
-        <nav>
-        <NavLink to="/categories/new" style={link} >Add Category</NavLink>
-        </nav>
+            <div>
+                <h1>Categories</h1>
+                {categoryList()}
+            </div>
+
+            <nav>
+            <NavLink to="/recommendations/new" style={link} >Add Recommendation</NavLink>
+            </nav>
         </>
     )
 }

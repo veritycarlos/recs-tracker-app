@@ -1,49 +1,33 @@
-import React, { useContext } from 'react'
-import { UserContext } from '../context/user'
-import { NavLink, useNavigate} from 'react-router-dom'
+import React from 'react'
+import { NavLink} from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux';
+import { sessionsDeleted } from '../features/sessionsSlice';
 
 const Navbar = () => {
-    const {user, logout, loggedIn } = useContext(UserContext)
-    const navigate = useNavigate
-
-    const logoutUser = () => {
-        fetch('/logout', {
-            method: 'DELETE',
-            headers: { 'Content-Type': 'application/json'}
-        })
-        .then(() => {
-            logout()
-            navigate('/')
-        })
+    const dispatch = useDispatch();
+    const user = useSelector(state => state.sessions.entities)
+  
+    function handleLogout() {
+      fetch("/logout", { 
+        method: "DELETE", 
+      }).then(() => {
+          dispatch(sessionsDeleted());
+        });
     }
 
-    if (loggedIn) {
-        return (
-            <nav className="nav">
-                <NavLink className="rec-tracker" to='/'>
-                    RecsTracker
-                </NavLink>
-                <ul>
-                    <NavLink className="link" to='/categories'> {user.name}'s Recs</NavLink>
-                    <NavLink className="link" onClick={logoutUser}>Logout</NavLink>
-                </ul>
-            </nav>
-        )
-    } else {
-        return (  
-            <nav className="nav">
-                <NavLink className="rec-tracker" to='/'>
-                    RecsTracker
-                </NavLink>
-                <NavLink className="link" to='/login'>
-                    Login
-                </NavLink>
-                <NavLink className="link" to='/signup'>
-                    Signup
-                </NavLink>
-            </nav> 
-        )
-    } 
-}
+    return (  
+        <nav className="nav">
+            <NavLink className="rec-tracker" to='/'>
+                RecsTracker
+            </NavLink>
+            <NavLink className="link" to='/categories'>
+                Categories
+            </NavLink>
+            <NavLink className="link" to={"/"}>
+                <button onClick={handleLogout}>{user ? "Logout" : ""}</button>
+            </NavLink>
+        </nav> 
+    )
+} 
 
 export default Navbar

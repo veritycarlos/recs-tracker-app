@@ -1,18 +1,29 @@
-import React, {useState, useContext} from 'react'
-import { UserContext} from '../context/user'
+import React, { useEffect, useState} from 'react'
+import { useSelector, useDispatch } from 'react-redux';
+import { postAllCategory } from '../features/allCategoriesSlice'
+import { stateUpdateReset } from '../features/allCategoriesSlice';
+import { useNavigate } from 'react-router-dom';
 
 const CategoryForm = () => {
     const [name, setName] = useState("");
-    const {addCategory, errors} = useContext(UserContext)
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const errors = useSelector(state => state.allCategories.errors)
+    const updated = useSelector(state => state.allCategories.updated)
 
     const handleSubmit = e => {
         e.preventDefault();
-        addCategory({
-            name: name
-        })
+        dispatch(postAllCategory(name))
     }
 
-  return (
+    useEffect(() => {
+        if (updated) {
+            navigate('/recommendations/new');
+            dispatch(stateUpdateReset());
+        }
+    })
+
+    return ( 
     <div>
         <h3>Add Category </h3>
         <form onSubmit={handleSubmit}>
@@ -27,11 +38,11 @@ const CategoryForm = () => {
             </div> 
             <br/>
             <input type="submit" value="Add New Category" />
-            {errors ? (errors.map((error) => {return <p >{error}</p>})) : null }
+            {errors ? <p >{errors}</p> : null }
         </form>
 
     </div>
-  )
+    )
 }
 
 export default CategoryForm
